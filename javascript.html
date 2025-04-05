@@ -1,0 +1,53 @@
+<script>
+  function searchEmails() {
+    const sender = document.getElementById("sender").value;
+    const subject = document.getElementById("subject").value;
+    const loadingIndicator = document.getElementById("loading");
+    const resultsDiv = document.getElementById("results");
+
+    resultsDiv.innerHTML = "";
+    loadingIndicator.style.display = "block";
+
+    google.script.run
+      .withSuccessHandler((results) => {
+        loadingIndicator.style.display = "none";
+        displayResults(results);
+      })
+      .searchEmails(sender, subject, 0);
+  }
+
+  function displayResults(results) {
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";
+
+    results.forEach((email, index) => {
+      const emailEntry = document.createElement("div");
+      emailEntry.className = "result p-3 mb-2 rounded";
+      emailEntry.innerHTML = `<strong>${email.subject}</strong> from ${email.sender}<br><span class='date'>Sent: ${email.date}&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+
+      const selectButton = document.createElement("button");
+      selectButton.className = "btn btn-primary btn-sm mt-2";
+      selectButton.textContent = "Select";
+      selectButton.onclick = () => handleEmailSelection(email);
+
+      emailEntry.appendChild(selectButton);
+      resultsDiv.appendChild(emailEntry);
+    });
+  }
+
+  function handleEmailSelection(email) {
+    const loadingSelection = document.getElementById("loadingSelection");
+    loadingSelection.style.display = "block";
+
+    google.script.run
+      .withSuccessHandler(() => {
+        loadingSelection.style.display = "none";
+        closeDialog();
+      })
+      .returnEmailSelection(email);
+  }
+
+  function closeDialog() {
+    google.script.host.close();
+  }
+</script>
