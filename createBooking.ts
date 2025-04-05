@@ -45,9 +45,10 @@ const createBooking = () => {
 
   // Get selected events
   let selectedEventData = getSelectedEventData(allConfirmedEvents);
-  const selectedEvents = selectedEventData[0];
-  const selectedEventsIndexes = selectedEventData[1];
-  const latestEventDate = selectedEventData[2];
+  const selectedEvents = selectedEventData.allSelectedEvents;
+  const selectedEventsIndexes = selectedEventData.selectedEventsIndexes;
+  const latestEventDate = selectedEventData.latestEventDate;
+  const latestEventDateAsNumber = selectedEventData.latestEventDateAsNumber;
 
   // Calculate hire fee for deal memo based on selected events
   const calculatedFees = calculateFees(selectedEvents);
@@ -179,6 +180,9 @@ const createBooking = () => {
     "",
     "",
     latestEventDate,
+    "",
+    "",
+    latestEventDateAsNumber,
   ];
   bookingsSheet.appendRow(bookingRow);
   const bookingSheetNewRowNumber = bookingsSheet.getLastRow();

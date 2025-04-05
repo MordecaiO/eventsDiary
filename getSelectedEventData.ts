@@ -2,15 +2,26 @@
  * Retrieves data for selected events from a given list of confirmed events.
  *
  * @param {string[][]} confirmedEvents - A 2D array of confirmed events data.
- * @returns {[string[][], number[], string]} - A tuple containing:
+ * @returns {{
+ *   allSelectedEvents: string[][],
+ *   selectedEventsIndexes: number[],
+ *   latestEventDate: string
+ *   latestEventDateAsNumber: number
+ * }} - An object containing:
  *   - An array of selected events.
  *   - An array of indices of the selected events.
  *   - The latest event date as a string.
+ *   - The latest event date as a number.
  */
 
 const getSelectedEventData = (
   confirmedEvents: string[][]
-): [string[][], number[], string] => {
+): {
+  allSelectedEvents: string[][];
+  selectedEventsIndexes: number[];
+  latestEventDate: string;
+  latestEventDateAsNumber: number;
+} => {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const confirmedEventsSheet = spreadsheet.getSheetByName("Confirmed Events");
   const confirmedEventIndices = getColumnIndices(confirmedEventsSheet);
@@ -52,15 +63,16 @@ const getSelectedEventData = (
   });
   Logger.log(`Final latestEventDate: ${latestEventDate}`);
 
-  return [
-    selectedEvents,
-    selectedEventsIndexes,
-    latestEventDate.toLocaleDateString("en-GB", {
+  return {
+    allSelectedEvents: selectedEvents,
+    selectedEventsIndexes: selectedEventsIndexes,
+    latestEventDate: latestEventDate.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
     }),
-  ];
+    latestEventDateAsNumber: latestEventDate.valueOf(),
+  };
 };
 
 function testGetSelectedEventData() {
