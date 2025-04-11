@@ -61,10 +61,11 @@ const confirmEvents = () => {
       event,
       "",
       "Confirmed",
-      "",
-      "",
-      "",
-      false,
+      "", // Booking ID
+      "", // Start Time
+      "", // End Time
+      "", // Capacity
+      false, // Select
     ];
   });
 
@@ -138,21 +139,16 @@ const confirmEvents = () => {
           .map((event) => event[eventNameIndex] + " " + event[calendarIDIndex])
           .join(", ")}`,
       ]);
-      spreadsheet.toast("Events confirmed", "Success", 10);
 
-      // // 🚨 TODO: add ability to create a booking straight after confirmed event
-      // const createBookingDialog = SpreadsheetApp.getUi().alert(
-      //   "Create Booking",
-      //   "Would you like to create a booking for these events?",
-      //   SpreadsheetApp.getUi().ButtonSet.YES_NO
-      // );
-
-      // if (createBookingDialog == SpreadsheetApp.getUi().Button.YES) {
-      //   // select the events that have just been confirmed and check the checkboxes
-      //   checkboxRange.check();
-      //   createBooking();
-      //   checkboxRange.uncheck();
-      // }
+      spreadsheet.toast(
+        "Events Confirmed",
+        `Reminder 🚨
+        Please add the following to your show:
+        - Start Time / End Time 
+        - Capacity
+        `,
+        10
+      );
     }
   }
 };

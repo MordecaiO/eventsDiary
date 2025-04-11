@@ -39,8 +39,7 @@ const getSelectedEventData = (
 
   // Check if there are no events selected
   if (selectedEvents.length == 0) {
-    SpreadsheetApp.getUi().alert("No events selected");
-    return;
+    throw Error("No events selected");
   }
 
   // Get latest event date from selected events

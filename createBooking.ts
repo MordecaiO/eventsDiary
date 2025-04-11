@@ -6,7 +6,7 @@ const createBooking = () => {
   const signeeSheet = spreadsheet.getSheetByName("Signees");
   const confirmedEventIndices = getColumnIndices(confirmedEventsSheet);
   const bookingIndices = getColumnIndices(bookingsSheet);
-  const selectIndex = confirmedEventIndices["Select"];
+  const eventNameIndex = confirmedEventIndices["Event Name"];
   const bookingIDIndex = confirmedEventIndices["Booking ID"];
   const signeeIDIndex = bookingIndices["Signee ID"];
 
@@ -159,7 +159,7 @@ const createBooking = () => {
   }
 
   // Create a booking
-  const firstEventName = selectedEvents[0][5];
+  const firstEventName = selectedEvents[0][eventNameIndex];
   const bookingID = firstEventName + Utilities.getUuid().substring(0, 6);
   const signeeID = "SIGN" + " " + Utilities.getUuid().substring(0, 6);
   const createdAt = new Date().toLocaleString("en-GB");
