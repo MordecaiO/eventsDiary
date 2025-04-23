@@ -2,8 +2,26 @@
 // return fee and show explanation of how fee was calculated
 
 function calculateFees(selectedEvents) {
+  const summerHireFeesSheet =
+    SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Hire Fees May-Sep");
+  const winterHireFeesSheet =
+    SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Hire Fees Oct-Apr");
+
+  // Find the last event date from selectedEvents
+
+  const allDates = selectedEvents.map((e) => parseDMY(e[0]));
+  const lastEventDate = new Date(
+    Math.max.apply(
+      null,
+      allDates.map((d) => d.getTime())
+    )
+  );
+  const month = lastEventDate.getMonth(); // 0 = Jan, 4 = May, 8 = Sep
+
+  // May (4) to Sep (8) inclusive is summer, otherwise winter
   const sheet =
-    SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Hire Fees");
+    month >= 4 && month <= 8 ? summerHireFeesSheet : winterHireFeesSheet;
+
   const pricingTable = sheet.getDataRange().getValues().slice(1); // Remove headers
 
   console.log("Extracted Pricing Table:", pricingTable);

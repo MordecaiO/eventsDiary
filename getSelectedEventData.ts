@@ -48,9 +48,7 @@ const getSelectedEventData = (
 
   selectedEvents.forEach((event) => {
     Logger.log(`Event: ${event[0]}`);
-    const [day, month, year] = event[0].split("/");
-    const formattedDate = `${year}-${month}-${day}`;
-    const eventDate = new Date(formattedDate);
+    const eventDate = parseDMY(event[0]);
     Logger.log(`Processing event with date: ${eventDate}`);
 
     if (eventDate >= latestEventDate) {
