@@ -10,21 +10,21 @@ function calculateFees(selectedEvents) {
   // Find the last event date from selectedEvents
 
   const allDates = selectedEvents.map((e) => parseDMY(e[0]));
+  console.log("allDates", allDates);
   const lastEventDate = new Date(
     Math.max.apply(
       null,
       allDates.map((d) => d.getTime())
     )
   );
-  const month = lastEventDate.getMonth(); // 0 = Jan, 4 = May, 8 = Sep
 
+  const month = lastEventDate.getMonth(); // 0 = Jan, 4 = May, 8 = Sep
+  console.log("month", month);
   // May (4) to Sep (8) inclusive is summer, otherwise winter
   const sheet =
     month >= 4 && month <= 8 ? summerHireFeesSheet : winterHireFeesSheet;
-
+  console.log("Selected Hire Fees Sheet", sheet.getSheetName());
   const pricingTable = sheet.getDataRange().getValues().slice(1); // Remove headers
-
-  console.log("Extracted Pricing Table:", pricingTable);
 
   // Step 1: Organize pricing data by time period
   const pricingMap = { DAY: {}, NIGHT: {} };
@@ -61,7 +61,6 @@ function calculateFees(selectedEvents) {
     let [, , room, timing] = entry;
     groupedSelection[timing].push(room);
   }
-  console.log("Grouped Selection:", groupedSelection);
 
   // Step 3: Compute the cheapest price for each time period
   let totalCost = {
@@ -205,7 +204,7 @@ function testCalculateTotalHireDetails() {
     //Date 	Day	Room	Night/Day	Calendar ID	Event Name	Notes	Status	Booking ID	Start Time	End Time	Select
     [
       [
-        "2025-04-10",
+        "10/01/2025",
         "Thursday",
         "TERRACE",
         "DAY",
